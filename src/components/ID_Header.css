@@ -1,0 +1,32 @@
+.header {
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    background-color: white;
+    /* Adjust as needed */
+    border-bottom: 10px solid transparent;
+    border-image: radial-gradient(circle, #3D52A0, #EDE8F5) 1;
+    /* Gradient border */
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    /* Ensure it stays above other elements */
+    flex-shrink: 0;
+    /* Prevent the header from shrinking */
+    margin-bottom: 5px;
+    justify-content: space-between;
+}
+
+.logo {
+    height: 40px;
+    /* Adjust as needed */
+}
+
+.header-title {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    color:#3D52A0
+    
+}
