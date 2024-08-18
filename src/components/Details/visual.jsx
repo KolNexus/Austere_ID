@@ -22,7 +22,7 @@ const Visual = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get('http://localhost:8000/api/data', {
+        const response = await axios.get(`${process.env.REACT_APP_SERVER_URL}/api/data`, {
           params: { kolId }
         });
         const data = response.data;

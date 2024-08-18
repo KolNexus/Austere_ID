@@ -21,31 +21,31 @@ const ParetoChart = ({ type, title }) => {
 
         switch (type) {
           case 'states':
-            endpoint = 'http://localhost:8000/api/top-states';
+            endpoint = `${process.env.REACT_APP_SERVER_URL}/api/top-states`;
             field = 'State';
             break;
           case 'cities':
-            endpoint = 'http://localhost:8000/api/top-cities';
+            endpoint = `${process.env.REACT_APP_SERVER_URL}/api/top-cities`;
             field = 'City';
             break;
           case 'conferences':
-            endpoint = 'http://localhost:8000/api/top-conferences';
+            endpoint = `${process.env.REACT_APP_SERVER_URL}/api/top-conferences`;
             field = 'Conference Name';
             break;
           case 'kol-conference-distribution':
-            endpoint = 'http://localhost:8000/api/kol-conference-distribution';
+            endpoint = `${process.env.REACT_APP_SERVER_URL}/api/kol-conference-distribution`;
             field = 'Key topic Congress Count';
             break;
           case 'kol-publication-distribution':
-            endpoint = 'http://localhost:8000/api/kol-publication-distribution';
+            endpoint = `${process.env.REACT_APP_SERVER_URL}/api/kol-publication-distribution`;
             field = 'Key topic Pubs Count';
             break;
           case 'kol-trials-distribution':
-            endpoint = 'http://localhost:8000/api/kol-trials-distribution';
+            endpoint = `${process.env.REACT_APP_SERVER_URL}/api/kol-trials-distribution`;
             field = 'Key topic Trials Count';
             break;
           case 'kol-association-distribution':
-            endpoint = 'http://localhost:8000/api/kol-association-distribution';
+            endpoint = `${process.env.REACT_APP_SERVER_URL}/api/kol-association-distribution`;
             field = 'ASSOCIATION Count';
             break;
           default:

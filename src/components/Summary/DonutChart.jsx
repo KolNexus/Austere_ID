@@ -20,11 +20,11 @@ const DonutChart = ({ type }) => {
 
                 switch (type) {
                     case 'affiliations':
-                        endpoint = 'http://localhost:8000/api/top-affiliations';
+                        endpoint = `${process.env.REACT_APP_SERVER_URL}/api/top-affiliations`;
                         labelField = 'Affiliation';
                         break;
                     case 'specialties':
-                        endpoint = 'http://localhost:8000/api/top-specialties';
+                        endpoint = `${process.env.REACT_APP_SERVER_URL}/api/top-specialties`;
                         labelField = 'Specialty';
                         break;
                     default:

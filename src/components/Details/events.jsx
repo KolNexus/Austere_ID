@@ -15,7 +15,7 @@ const Body = ({ kolId, handleBackClick }) => {
   useEffect(() => {
     const fetchAllEvents = async () => {
       try {
-        const response = await axios.get('http://localhost:8000/api/allevents', {
+        const response = await axios.get(`${process.env.REACT_APP_SERVER_URL}/api/allevents`, {
           params: { kolId }
         });
         setAllEvents(response.data);
@@ -151,7 +151,7 @@ const Events = ({ kolId }) => {
   useEffect(() => {
     const fetchEvents = async () => {
       try {
-        const response = await axios.get('http://localhost:8000/api/events', {
+        const response = await axios.get(`${process.env.REACT_APP_SERVER_URL}/api/events`, {
           params: { kolId }
         });
         const events = response.data;

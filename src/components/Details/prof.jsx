@@ -70,7 +70,7 @@ const Prof = ({ kolId }) => {
   useEffect(() => {
     const fetchAssociations = async () => {
       try {
-        const response = await axios.get('http://localhost:8000/api/associations', {
+        const response = await axios.get(`${process.env.REACT_APP_SERVER_URL}/api/associations`, {
           params: { kolId }
         });
         const associations = response.data;

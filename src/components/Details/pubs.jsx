@@ -71,7 +71,7 @@ const Pubs = ({ kolId }) => {
   useEffect(() => {
     const fetchPublications = async () => {
       try {
-        const response = await axios.get('http://localhost:8000/api/publications', {
+        const response = await axios.get(`${process.env.REACT_APP_SERVER_URL}/api/publications`, {
           params: { kolId }
         });
         const publications = response.data;

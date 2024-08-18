@@ -114,7 +114,7 @@ const Content = () => {
   const fetchDoctors = useCallback(async (page = 1, query = '') => {
     setLoading(true);
     try {
-      const response = await axios.get('http://localhost:8000/api/doctors', {
+      const response = await axios.get(`${process.env.REACT_APP_SERVER_URL}/api/doctors`, {
         params: { page, limit: itemsPerPage, query }
       });
       setFilteredDoctors(response.data.doctors);
@@ -134,7 +134,7 @@ const Content = () => {
 
   const fetchAllWeightageData = async () => {
     try {
-      const response = await axios.get('http://localhost:8000/api/weightages/all');
+      const response = await axios.get(`${process.env.REACT_APP_SERVER_URL}/api/weightages/all`);
       const weightageData = response.data;
       weightageData.forEach(item => {
         switch (item.column_name) {

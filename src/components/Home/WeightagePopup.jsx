@@ -43,7 +43,7 @@ const WeightagePopup = ({ showPopup, closePopup }) => {
 
     const fetchDefaultWeightages = async () => {
         try {
-            const response = await axios.get('http://localhost:8000/api/weightages');
+            const response = await axios.get(`${process.env.REACT_APP_SERVER_URL}/api/weightages`);
             setEditedWeightages(response.data);
         } catch (error) {
             console.error('Error fetching default weightages:', error);
@@ -60,7 +60,7 @@ const WeightagePopup = ({ showPopup, closePopup }) => {
 
     const saveWeightages = async () => {
         try {
-            await axios.post('http://localhost:8000/api/update-weightages', editedWeightages);
+            await axios.post(`${process.env.REACT_APP_SERVER_URL}/api/update-weightages`, editedWeightages);
             fetchDefaultWeightages();
         } catch (error) {
             console.error('Error saving weightages:', error);

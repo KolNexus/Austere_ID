@@ -2,7 +2,7 @@ import React from 'react';
 import './ID_Header.css';
 import { Button } from '@mui/material';
 import { useNavigate,useLocation } from 'react-router-dom';
-const Header = () => {
+const Header = ({ signOut }) => {
 
   const navigate = useNavigate();
   const handleClick = () => {
@@ -24,6 +24,7 @@ const Header = () => {
       <div>
         {/* Conditionally render the button based on the current path */}
         {location.pathname !== '/home' && (
+          <>
           <Button
             variant="contained"
             onClick={handleClick}
@@ -31,6 +32,15 @@ const Header = () => {
           >
             Go To Summary
           </Button>
+          
+          <Button
+            variant="contained"
+            onClick={signOut}
+            sx={{ height: "30px", marginLeft: '20px', backgroundColor: '#8697C4', color:'white' }}
+          >
+            Sign Out
+          </Button>
+          </>
         )}
       </div>
     </header>

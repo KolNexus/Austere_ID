@@ -33,7 +33,7 @@ const PieChartsComponent = ({ kolDetails }) => {
   useEffect(() => {
     const fetchKeywords = async () => {
       try {
-        const response = await axios.get('http://localhost:8000/api/keywords');
+        const response = await axios.get(`${process.env.REACT_APP_SERVER_URL}/api/keywords`);
         setKeywords(response.data.keywords);
       } catch (err) {
         console.error('Error fetching keywords:', err);
@@ -44,7 +44,7 @@ const PieChartsComponent = ({ kolDetails }) => {
     const fetchAssociationData = async () => {
       if (kolDetails && kolDetails['KOL ID']) {
         try {
-          const response = await axios.get(`http://localhost:8000/api/associations/${kolDetails['KOL ID']}`);
+          const response = await axios.get(`${process.env.REACT_APP_SERVER_URL}/api/associations/${kolDetails['KOL ID']}`);
           setAssociationData(response.data);
         } catch (err) {
           if (err.response && err.response.status === 404) {

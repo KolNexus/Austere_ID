@@ -36,7 +36,7 @@ const App = () => {
             <header className='App-header'>
               <Router>
                 <div className="app-container">
-                  <Header />
+                  <Header signOut={signOut} /> {/* Pass the signOut function */}
                   <div className="main-content">
 
                     <Routes>
@@ -48,17 +48,6 @@ const App = () => {
                   </div>
                 </div>
               </Router>
-              <button
-                onClick={signOut}
-                style={{
-                  margin: '20px',
-                  fontSize: '0.8rem',
-                  padding: '5px 10px',
-                  marginTop: '20px'
-                }}
-              >
-                Sign Out
-              </button>
             </header>
           </main>
         )}

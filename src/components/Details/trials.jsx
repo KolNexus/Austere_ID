@@ -77,7 +77,7 @@ const Trials = ({ kolId }) => {
   useEffect(() => {
     const fetchTrials = async () => {
       try {
-        const response = await axios.get('http://localhost:8000/api/trials', {
+        const response = await axios.get(`${process.env.REACT_APP_SERVER_URL}/api/trials`, {
           params: { kolId }
         });
         const trials = response.data;

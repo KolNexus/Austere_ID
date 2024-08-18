@@ -17,7 +17,7 @@ const Overview = ({ kolDetails, setValue }) => {
   useEffect(() => {
     const fetchWeightages = async () => {
       try {
-        const response = await axios.get('http://localhost:8000/api/weightages/all');
+        const response = await axios.get(`${process.env.REACT_APP_SERVER_URL}/api/weightages/all`);
         const weightages = response.data.reduce((acc, item) => {
           acc[item.column_name.toLowerCase().replace(/ /g, '')] = parseFloat(item.max);
           return acc;
