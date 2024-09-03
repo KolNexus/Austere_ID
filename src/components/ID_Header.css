@@ -9,7 +9,6 @@
     /* Gradient border */
     position: sticky;
     top: 0;
-    z-index: 1000;
     /* Ensure it stays above other elements */
     flex-shrink: 0;
     /* Prevent the header from shrinking */
