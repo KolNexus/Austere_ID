@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import axios from 'axios';
+import apiClient from '../../utils/apiClient';
 import { Pie } from 'react-chartjs-2';
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js';
 import { Card, CardContent, Typography } from '@mui/material';
@@ -33,7 +33,7 @@ const PieChartsComponent = ({ kolDetails }) => {
   useEffect(() => {
     const fetchKeywords = async () => {
       try {
-        const response = await axios.get(`${process.env.REACT_APP_SERVER_URL}/api/keywords`);
+        const response = await apiClient.get(`/keywords`);
         setKeywords(response.data.keywords);
       } catch (err) {
         console.error('Error fetching keywords:', err);
@@ -44,7 +44,7 @@ const PieChartsComponent = ({ kolDetails }) => {
     const fetchAssociationData = async () => {
       if (kolDetails && kolDetails['KOL ID']) {
         try {
-          const response = await axios.get(`${process.env.REACT_APP_SERVER_URL}/api/associations/${kolDetails['KOL ID']}`);
+          const response = await apiClient.get(`/associations/${kolDetails['KOL ID']}`);
           setAssociationData(response.data);
         } catch (err) {
           if (err.response && err.response.status === 404) {
@@ -116,13 +116,15 @@ const PieChartsComponent = ({ kolDetails }) => {
               return data.labels
                 .map((label, i) => {
                   const value = data.datasets[0].data[i];
+                  const meta = chart.getDatasetMeta(0);
+              const isHidden = meta.data[i].hidden === true;
                   if (value > 0) {
                     return {
                       text: `${label}`,
                       fillStyle: data.datasets[0].backgroundColor[i],
                       strokeStyle: data.datasets[0].borderColor[i],
                       lineWidth: data.datasets[0].borderWidth,
-                      hidden: false,
+                      hidden: isHidden, // Set hidden property for strikethrough effect
                       index: i,
                     };
                   }
@@ -133,6 +135,18 @@ const PieChartsComponent = ({ kolDetails }) => {
             return [];
           },
         },
+        onClick: (e, legendItem, legend) => {
+          const index = legendItem.index;
+          const ci = legend.chart;
+          const meta = ci.getDatasetMeta(0);
+  
+          // Toggle the hidden property of the corresponding dataset item
+          meta.data[index].hidden = !meta.data[index].hidden;
+  
+          // Update the chart
+          ci.update();
+        },
+      
       },
       tooltip: {
         callbacks: {
@@ -145,6 +159,7 @@ const PieChartsComponent = ({ kolDetails }) => {
       },
     },
     maintainAspectRatio: false,
+
   };
   
   

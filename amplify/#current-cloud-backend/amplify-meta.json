@@ -1,0 +1,58 @@
+{
+  "providers": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-austereid-dev-96efb-authRole",
+      "UnauthRoleArn": "arn:aws:iam::676206911516:role/amplify-austereid-dev-96efb-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::676206911516:role/amplify-austereid-dev-96efb-authRole",
+      "Region": "ap-south-1",
+      "DeploymentBucketName": "amplify-austereid-dev-96efb-deployment",
+      "UnauthRoleName": "amplify-austereid-dev-96efb-unauthRole",
+      "StackName": "amplify-austereid-dev-96efb",
+      "StackId": "arn:aws:cloudformation:ap-south-1:676206911516:stack/amplify-austereid-dev-96efb/a33584d0-5bd5-11ef-a938-02c85fcbcd8b",
+      "AmplifyAppId": "d2vlfjoz4vlv96"
+    }
+  },
+  "auth": {
+    "austereid9fde623c": {
+      "service": "Cognito",
+      "providerPlugin": "awscloudformation",
+      "dependsOn": [],
+      "customAuth": false,
+      "frontendAuthConfig": {
+        "socialProviders": [],
+        "usernameAttributes": [
+          "EMAIL"
+        ],
+        "signupAttributes": [
+          "EMAIL"
+        ],
+        "passwordProtectionSettings": {
+          "passwordPolicyMinLength": 8,
+          "passwordPolicyCharacters": []
+        },
+        "mfaConfiguration": "OFF",
+        "mfaTypes": [
+          "SMS"
+        ],
+        "verificationMechanisms": [
+          "EMAIL"
+        ]
+      },
+      "providerMetadata": {
+        "s3TemplateURL": "https://s3.amazonaws.com/amplify-austereid-dev-96efb-deployment/amplify-cfn-templates/auth/austereid9fde623c-cloudformation-template.json",
+        "logicalId": "authaustereid9fde623c"
+      },
+      "lastPushTimeStamp": "2024-08-16T13:59:22.366Z",
+      "output": {
+        "UserPoolId": "ap-south-1_vqvPtYrn0",
+        "AppClientIDWeb": "6u4c693s6vdt1vedbcrubfhe8r",
+        "AppClientID": "678c4pvmbu49hipgf4b1t2ibqv",
+        "IdentityPoolId": "ap-south-1:5d0e42b0-c90f-4d52-92c4-9637b723e7bc",
+        "UserPoolArn": "arn:aws:cognito-idp:ap-south-1:676206911516:userpool/ap-south-1_vqvPtYrn0",
+        "IdentityPoolName": "austereid9fde623c_identitypool_9fde623c__dev",
+        "UserPoolName": "austereid9fde623c_userpool_9fde623c"
+      },
+      "lastPushDirHash": "vf2alnJKup0Jlq2rZu+4kGO+DPU="
+    }
+  }
+}

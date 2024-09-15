@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import axios from 'axios';
+import apiClient from '../../utils/apiClient';
 import { Doughnut } from 'react-chartjs-2';
 import { Card, CardContent, CardHeader, Dialog, DialogContent, DialogTitle } from '@mui/material';
 import { Chart, registerables } from 'chart.js';
@@ -20,18 +20,18 @@ const DonutChart = ({ type }) => {
 
                 switch (type) {
                     case 'affiliations':
-                        endpoint = `${process.env.REACT_APP_SERVER_URL}/api/top-affiliations`;
+                        endpoint = `/top-affiliations`;
                         labelField = 'Affiliation';
                         break;
                     case 'specialties':
-                        endpoint = `${process.env.REACT_APP_SERVER_URL}/api/top-specialties`;
+                        endpoint = `/top-specialties`;
                         labelField = 'Specialty';
                         break;
                     default:
                         return;
                 }
 
-                const response = await axios.get(endpoint);
+                const response = await apiClient.get(endpoint);
                 const data = response.data;
                 const labels = data.map(item => item[labelField]);
                 const kolCounts = data.map(item => item.KOL_Count);
@@ -42,13 +42,13 @@ const DonutChart = ({ type }) => {
                         {
                             label: 'Count',
                             data: kolCounts,
-                            backgroundColor: [ 
+                            backgroundColor: [
                                 //'#FF6384',
                                 '#FF5733',
                                 //'#36A2EB',
                                 '#33C3F0',
-                               // '#FFCE56',
-                               '#FFC300', 
+                                // '#FFCE56',
+                                '#FFC300',
                                 //'#FF6384',
                                 '#DAF7A6',
                                 //'#36A2EB',
@@ -82,19 +82,19 @@ const DonutChart = ({ type }) => {
         maintainAspectRatio: false,
         plugins: {
             legend: {
-              position: 'right', // Position the legend on the right
-              align: 'center',
+                position: 'right', // Position the legend on the right
+                align: 'center',
             },
-          },
+        },
 
-          layout: {
+        layout: {
             padding: {
-              left: 0,
-              right: 0,
-              top: 0,
-              bottom: 0
+                left: 0,
+                right: 0,
+                top: 0,
+                bottom: 0
             }
-          }
+        }
     };
 
     const handleClickOpen = () => {
@@ -107,34 +107,43 @@ const DonutChart = ({ type }) => {
 
     return (
         <>
-        <Card
-            sx={{
-                height: '420px',
-                cursor: 'pointer',
-                transition: 'transform 0.3s, box-shadow 0.3s',
-                '&:hover': {
-                    transform: 'scale(1.05)',
-                    boxShadow: 6,
-                }
-            }}
-            onClick={handleClickOpen}
-        >
-            <CardHeader title={`Top 10 ${type.charAt(0).toUpperCase() + type.slice(1)}`} />
-            <CardContent>
-                <div className="chart-container">
-                    {chartData ? <Doughnut data={chartData} options={options} /> : <p>Loading...</p>}
-                </div>
-            </CardContent>
-        </Card>
-        <Dialog open={open} onClose={handleClose} maxWidth="md" fullWidth>
-        <DialogTitle>{`Top 10 ${type.charAt(0).toUpperCase() + type.slice(1)}`}</DialogTitle>
-        <DialogContent>
-          <div className="chart-container">
-            {chartData ? <Doughnut data={chartData} options={options} /> : <p>Loading...</p>}
-          </div>
-        </DialogContent>
-      </Dialog>
-      </>
+            <Card
+                sx={{
+                    cursor: 'pointer',
+                    transition: 'transform 0.3s, box-shadow 0.3s',
+                    '&:hover': {
+                        transform: 'scale(1.05)',
+                        boxShadow: 6,
+                    }
+                }}
+                onClick={handleClickOpen}
+            >
+                <CardHeader sx={{
+                    paddingBottom: "0px",
+                    '& .MuiCardHeader-title': {
+                        fontSize: '20px',
+                        fontFamily: "Aptos",
+                        fontWeight: 50,
+                        display:"flex",
+                        justifyContent: "center"
+                    },
+                }}
+                    title={`Top 10 ${type.charAt(0).toUpperCase() + type.slice(1)}`} />
+                <CardContent sx={{ px: 1, py: 0, paddingBottom: "0px",'&:last-child ': {paddingBottom: "0px"}}}>
+                    <div className="chart-container">
+                        {chartData ? <Doughnut data={chartData} options={options} /> : <p>Loading...</p>}
+                    </div>
+                </CardContent>
+            </Card>
+            <Dialog open={open} onClose={handleClose} maxWidth="md" fullWidth>
+                <DialogTitle>{`Top 10 ${type.charAt(0).toUpperCase() + type.slice(1)}`}</DialogTitle>
+                <DialogContent>
+                    <div className="chart-container">
+                        {chartData ? <Doughnut data={chartData} options={options} /> : <p>Loading...</p>}
+                    </div>
+                </DialogContent>
+            </Dialog>
+        </>
     );
 };
 

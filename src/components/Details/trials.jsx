@@ -4,7 +4,7 @@ import {
 } from '@mui/material';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
-import axios from 'axios';
+import apiClient from '../../utils/apiClient';
 
 // Helper function to format trial data
 const createTrialData = (id, title, sponsor, phases, completionDate, recruitment, conditions, interventions, age, fundedBys, startDate, tid, link) => ({
@@ -77,7 +77,7 @@ const Trials = ({ kolId }) => {
   useEffect(() => {
     const fetchTrials = async () => {
       try {
-        const response = await axios.get(`${process.env.REACT_APP_SERVER_URL}/api/trials`, {
+        const response = await apiClient.get(`/trials`, {
           params: { kolId }
         });
         const trials = response.data;
@@ -123,8 +123,8 @@ const Trials = ({ kolId }) => {
   ));
 
   return (
-    <Box sx={{ flexGrow: 1, width: '100%', p: 2, overflow: 'hidden', height: '100vh' }}>
-      <div style={{ display: 'flex', alignItems: 'center', marginBottom: '16px' }}>
+    <Box sx={{ flexGrow: 1, width: '100%', px: 2,py:1, overflow: 'hidden', height: '100%' }}>
+      <div style={{ display: 'flex', alignItems: 'center', marginBottom: '16px', height: '8%' }}>
         <Typography variant="h6" gutterBottom color="#3D52A0" sx={{ flexGrow: 1 }}>
           List of Trials
         </Typography>
@@ -150,7 +150,7 @@ const Trials = ({ kolId }) => {
       ) : filteredTrials.length === 0 ? (
         <Typography variant="body1">No trials found.</Typography>
       ) : (
-        <TableContainer component={Paper} sx={{ maxHeight: '70vh', overflow: 'auto' }}>
+        <TableContainer component={Paper} sx={{ maxHeight: '90%', overflow: 'auto' }}>
           <Table stickyHeader aria-label="collapsible table">
             <TableHead sx={{ backgroundColor: '#54C1DF' }}>
               <TableRow>

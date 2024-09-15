@@ -8,9 +8,16 @@
     border-image: radial-gradient(circle, #3D52A0, #EDE8F5) 1;
     /* Gradient border */
     position: sticky;
+
     top: 0;
+    left: 0;
+    right: 0;
+    height: 60px;
+    /* Adjust the height of the header */
+    z-index: 10;
+    /* Ensure it stays above the content */
+
     /* Ensure it stays above other elements */
-    z-index: 9999;
     flex-shrink: 0;
     /* Prevent the header from shrinking */
     margin-bottom: 5px;
@@ -19,7 +26,6 @@
 
 .logo {
     height: 40px;
-    /* Adjust as needed */
 }
 
 .header-title {
@@ -27,6 +33,16 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    color:#3D52A0
-    
+    color: #3D52A0;
+    flex: 1;
+
+}
+
+.user-menu {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    color: #3D52A0;
+    position: relative;
+    margin-left: 5px;
 }

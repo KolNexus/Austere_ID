@@ -4,7 +4,7 @@ import {
 } from '@mui/material';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
-import axios from 'axios';
+import apiClient from '../../utils/apiClient';
 
 // Helper function to format association data
 const createAssociationData = (id, organizationName, organizationType, boardCommittee, positionRole, startDate, endDate, affiliationType, organizationCity, organizationState, organizationCountry) => ({
@@ -70,7 +70,7 @@ const Prof = ({ kolId }) => {
   useEffect(() => {
     const fetchAssociations = async () => {
       try {
-        const response = await axios.get(`${process.env.REACT_APP_SERVER_URL}/api/associations`, {
+        const response = await apiClient.get(`/associations`, {
           params: { kolId }
         });
         const associations = response.data;
@@ -115,12 +115,11 @@ const Prof = ({ kolId }) => {
   ));
 
   return (
-    <Box sx={{ flexGrow: 1, width: '100%', p: 2, overflow: 'hidden', height: '100vh' }}>
-      <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', mb: 2 }}>
-        <Typography variant="h6" gutterBottom color="#3D52A0">
+    <Box sx={{ flexGrow: 1, width: '100%', px: 2,py:1, overflow: 'hidden', height: '100%' }}>
+      <div style={{ display: "flex", justifyContent: "space-between",height:"8%" }}>
+      <Typography variant="h6" gutterBottom color="#3D52A0">
           List of Associations
         </Typography>
-        <Box sx={{ display: 'flex', alignItems: 'center' }}>
           <TextField
             label="Search Organization"
             variant="outlined"
@@ -138,14 +137,13 @@ const Prof = ({ kolId }) => {
             onRowsPerPageChange={handleRowsPerPageChange}
             rowsPerPageOptions={[10, 25, 50]}
           />
-        </Box>
-      </Box>
+      </div>
       {loading ? (
         <Typography variant="body1">Loading...</Typography>
       ) : filteredAssociations.length === 0 ? (
         <Typography variant="body1">No associations found.</Typography>
       ) : (
-        <TableContainer component={Paper} sx={{ maxHeight: '70vh', overflow: 'auto' }}>
+        <TableContainer component={Paper} sx={{ maxHeight: '90%', overflow: 'auto' }}>
           <Table stickyHeader aria-label="collapsible table">
             <TableHead sx={{ backgroundColor: '#54C1DF' }}>
               <TableRow>

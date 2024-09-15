@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import axios from 'axios';
+import apiClient from '../../utils/apiClient';
 import { Pie } from 'react-chartjs-2';
 import { Card, CardContent, CardHeader, Dialog, DialogContent, DialogTitle } from '@mui/material';
 import { Chart, registerables } from 'chart.js';
@@ -16,7 +16,7 @@ const PieChart = ({ title }) => {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const response = await axios.get(`${process.env.REACT_APP_SERVER_URL}/api/top-keywords-publications`);
+                const response = await apiClient.get(`/top-keywords-publications`);
                 const data = response.data;
                 const labels = data.map(item => item.keyword);
                 const sums = data.map(item => item.sum);
@@ -32,8 +32,8 @@ const PieChart = ({ title }) => {
                                 '#4E79A7',
                                 //'#36A2EB',
                                 '#F28E2B',
-                               // '#FFCE56',
-                               '#E15759', 
+                                // '#FFCE56',
+                                '#E15759',
                                 //'#FF6384',
                                 '#76B7B2',
                                 //'#36A2EB',
@@ -67,19 +67,19 @@ const PieChart = ({ title }) => {
         maintainAspectRatio: false,
         plugins: {
             legend: {
-              position: 'right', // Position the legend on the right
-              align: 'center',
+                position: 'right', // Position the legend on the right
+                align: 'center',
             },
-          },
+        },
 
-          layout: {
+        layout: {
             padding: {
-              left: 0,
-              right: 0,
-              top: 0,
-              bottom: 0
+                left: 0,
+                right: 0,
+                top: 0,
+                bottom: 0
             }
-          }
+        }
 
     };
 
@@ -95,7 +95,6 @@ const PieChart = ({ title }) => {
         <>
             <Card
                 sx={{
-                    height: '420px',
                     cursor: 'pointer',
                     transition: 'transform 0.3s, box-shadow 0.3s',
                     '&:hover': {
@@ -105,8 +104,17 @@ const PieChart = ({ title }) => {
                 }}
                 onClick={handleClickOpen}
             >
-                <CardHeader title={title} />
-                <CardContent>
+                <CardHeader title={title} sx={{
+                    paddingBottom: "0px",
+                    '& .MuiCardHeader-title': {
+                        fontSize: '20px',
+                        fontFamily: "Aptos",
+                        fontWeight: 50,
+                        display:"flex",
+                        justifyContent: "center"
+                    },
+                }} />
+                <CardContent sx={{ px: 1, py: 0, paddingBottom: "0px",'&:last-child ': {paddingBottom: "0px"} }}>
                     <div className="chart-container">
                         {chartData ? <Pie data={chartData} options={options} /> : <p>Loading...</p>}
                     </div>

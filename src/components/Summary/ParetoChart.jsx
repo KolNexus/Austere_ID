@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import axios from 'axios';
+import apiClient from '../../utils/apiClient';
 import { Bar } from 'react-chartjs-2';
 import { Card, CardContent, CardHeader, Dialog, DialogContent, DialogTitle } from '@mui/material';
 import { Chart, registerables } from 'chart.js';
@@ -21,31 +21,31 @@ const ParetoChart = ({ type, title }) => {
 
         switch (type) {
           case 'states':
-            endpoint = `${process.env.REACT_APP_SERVER_URL}/api/top-states`;
+            endpoint = `/top-states`;
             field = 'State';
             break;
           case 'cities':
-            endpoint = `${process.env.REACT_APP_SERVER_URL}/api/top-cities`;
+            endpoint = `/top-cities`;
             field = 'City';
             break;
           case 'conferences':
-            endpoint = `${process.env.REACT_APP_SERVER_URL}/api/top-conferences`;
+            endpoint = `/top-conferences`;
             field = 'Conference Name';
             break;
           case 'kol-conference-distribution':
-            endpoint = `${process.env.REACT_APP_SERVER_URL}/api/kol-conference-distribution`;
+            endpoint = `/kol-conference-distribution`;
             field = 'Key topic Congress Count';
             break;
           case 'kol-publication-distribution':
-            endpoint = `${process.env.REACT_APP_SERVER_URL}/api/kol-publication-distribution`;
+            endpoint = `/kol-publication-distribution`;
             field = 'Key topic Pubs Count';
             break;
           case 'kol-trials-distribution':
-            endpoint = `${process.env.REACT_APP_SERVER_URL}/api/kol-trials-distribution`;
+            endpoint = `/kol-trials-distribution`;
             field = 'Key topic Trials Count';
             break;
           case 'kol-association-distribution':
-            endpoint = `${process.env.REACT_APP_SERVER_URL}/api/kol-association-distribution`;
+            endpoint = `/kol-association-distribution`;
             field = 'ASSOCIATION Count';
             break;
           default:
@@ -54,7 +54,7 @@ const ParetoChart = ({ type, title }) => {
 
         setLabelField(field);
 
-        const response = await axios.get(endpoint);
+        const response = await apiClient.get(endpoint);
         const data = response.data;
 
         // Sort data for specific chart types
@@ -121,19 +121,27 @@ const ParetoChart = ({ type, title }) => {
 
   return (
     <>
-      <Card 
-      sx={{ 
-        height: '420px', 
-        cursor: 'pointer', 
-        transition: 'transform 0.3s, box-shadow 0.3s',
-        '&:hover': {
-          transform: 'scale(1.05)',
-          boxShadow: 6,
-        }
-      }} 
-      onClick={handleClickOpen}>
-        <CardHeader title={title} />
-        <CardContent>
+      <Card
+        sx={{
+          cursor: 'pointer',
+          transition: 'transform 0.3s, box-shadow 0.3s',
+          '&:hover': {
+            transform: 'scale(1.05)',
+            boxShadow: 6,
+          }
+        }}
+        onClick={handleClickOpen}>
+        <CardHeader title={title} sx={{
+          paddingBottom: "0px",
+          '& .MuiCardHeader-title': {
+            fontSize: '20px',
+            fontFamily: "Aptos",
+            fontWeight: 50,
+            display:"flex",
+            justifyContent: "center"
+          },
+        }} />
+        <CardContent sx={{ px: 1, py: 0, paddingBottom: "0px",'&:last-child ': {paddingBottom: "0px"} }}>
           <div className="chart-container">
             {chartData ? <Bar data={chartData} options={options} /> : <p>Loading...</p>}
           </div>

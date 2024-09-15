@@ -4,7 +4,7 @@ import {
 } from '@mui/material';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import ExpandLessIcon from '@mui/icons-material/ExpandLess';
-import axios from 'axios';
+import apiClient from '../../utils/apiClient';
 
 const Body = ({ kolId, handleBackClick }) => {
   const [allEvents, setAllEvents] = useState([]);
@@ -15,7 +15,7 @@ const Body = ({ kolId, handleBackClick }) => {
   useEffect(() => {
     const fetchAllEvents = async () => {
       try {
-        const response = await axios.get(`${process.env.REACT_APP_SERVER_URL}/api/allevents`, {
+        const response = await apiClient.get(`/allevents`, {
           params: { kolId }
         });
         setAllEvents(response.data);
@@ -60,8 +60,8 @@ const Body = ({ kolId, handleBackClick }) => {
 
   return (
     <>
-      <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 2 }}>
-        <Typography variant="h6" gutterBottom color="primary">
+      <div style={{ display: 'flex', alignItems: 'center', height: '8%' }}>
+        <Typography variant="h6" gutterBottom color="#3D52A0" sx={{ flexGrow: 1 }}>
           All Events
         </Typography>
         <TablePagination
@@ -73,11 +73,11 @@ const Body = ({ kolId, handleBackClick }) => {
           onRowsPerPageChange={handleRowsPerPageChange}
           rowsPerPageOptions={[10, 25, 50]}
         />
-        <Button variant="contained" onClick={handleBackClick} sx={{backgroundColor:'#7091E6'}}>
+        <Button variant="contained" onClick={handleBackClick} sx={{ backgroundColor: '#7091E6' }}>
           Back
         </Button>
-      </Box>
-      <TableContainer component={Paper} id="scrollable-table" sx={{ maxHeight: '70vh', overflow: 'auto' }}>
+      </div>
+      <TableContainer component={Paper} id="scrollable-table" sx={{ maxHeight: '90%', overflow: 'auto' }}>
         <Table stickyHeader aria-label="collapsible table">
           <TableHead sx={{ backgroundColor: '#54C1DF' }}>
             <TableRow>
@@ -151,7 +151,7 @@ const Events = ({ kolId }) => {
   useEffect(() => {
     const fetchEvents = async () => {
       try {
-        const response = await axios.get(`${process.env.REACT_APP_SERVER_URL}/api/events`, {
+        const response = await apiClient.get(`/events`, {
           params: { kolId }
         });
         const events = response.data;
@@ -218,11 +218,11 @@ const Events = ({ kolId }) => {
   };
 
   return (
-    <Box sx={{ flexGrow: 1, width: '100%', p: 2, overflow: 'hidden', height: '100vh' }}>
+    <Box sx={{ flexGrow: 1, width: '100%', px: 2, py: 1, overflow: 'hidden', height: '100%' }}>
       {view === 'main' ? (
         <>
-          <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-            <Typography variant="h6" gutterBottom color="#3D52A0">
+          <div style={{ display: 'flex', alignItems: 'center', marginBottom: '16px', height: '8%' }}>
+            <Typography variant="h6" gutterBottom color="#3D52A0" sx={{ flexGrow: 1 }}>
               List of Events
             </Typography>
             <Box sx={{ display: 'flex', alignItems: 'center' }}>
@@ -244,14 +244,14 @@ const Events = ({ kolId }) => {
                 rowsPerPageOptions={[10, 25, 50]}
               />
             </Box>
-            <Button variant="contained" onClick={handleAllClick} sx={{backgroundColor:'#7091E6'}}>
+            <Button variant="contained" onClick={handleAllClick} sx={{ backgroundColor: '#7091E6' }}>
               All
             </Button>
-          </Box>
+          </div>
           {filteredEvents.length === 0 ? (
             <Typography variant="body1">No events found.</Typography>
           ) : (
-            <TableContainer component={Paper} id="scrollable-table" sx={{ maxHeight: '70vh', overflow: 'auto' }}>
+            <TableContainer component={Paper} id="scrollable-table" sx={{ maxHeight: '90%', overflow: 'auto' }}>
               <Table stickyHeader aria-label="collapsible table">
                 <TableHead sx={{ backgroundColor: '#54C1DF' }}>
                   <TableRow>
@@ -283,8 +283,8 @@ const Events = ({ kolId }) => {
         </>
       ) : (
         <>
-          <div style={{ display: "flex", justifyContent: "space-between" }}>
-            <Typography variant="h6" gutterBottom color="#3D52A0">
+          <div style={{ display: 'flex', alignItems: 'center', marginBottom: '16px', height: '8%' }}>
+            <Typography variant="h6" gutterBottom color="#3D52A0" sx={{ flexGrow: 1 }}>
               Detailed Information
             </Typography>
             <TablePagination
@@ -296,73 +296,71 @@ const Events = ({ kolId }) => {
               onRowsPerPageChange={handleDetailsRowsPerPageChange}
               rowsPerPageOptions={[10, 25, 50]}
             />
-            <Button variant="contained" onClick={handleBackClick} sx={{backgroundColor:'#7091E6'}}>
+            <Button variant="contained" onClick={handleBackClick} sx={{ backgroundColor: '#7091E6' }}>
               Back
             </Button>
           </div>
-          <Box sx={{ mt: 4 }}>
-            <TableContainer component={Paper} id="scrollable-table" sx={{ maxHeight: '70vh', overflow: 'auto' }}>
-              <Table stickyHeader aria-label="detailed table">
-                <TableHead sx={{ backgroundColor: '#54C1DF' }}>
-                  <TableRow>
-                    <TableCell><strong>Participation Date</strong></TableCell>
-                    <TableCell><strong>Event Country</strong></TableCell>
-                    <TableCell><strong>Conference Name</strong></TableCell>
-                    <TableCell><strong>Session Name</strong></TableCell>
-                    <TableCell><strong>Sponsor Name</strong></TableCell>
-                    <TableCell><strong>Role</strong></TableCell>
-                    <TableCell></TableCell>
-                  </TableRow>
-                </TableHead>
-                <TableBody>
-                  {selectedRow.eventDetails.slice(detailsPage * detailsRowsPerPage, detailsPage * detailsRowsPerPage + detailsRowsPerPage).map((detail, index) => (
-                    <React.Fragment key={index}>
-                      <TableRow
-                        sx={{ '&:hover': { backgroundColor: '#F0F0F0', cursor: 'pointer' } }}
-                        onClick={() => handleDetailRowClick(index)}
-                      >
-                        <TableCell>{detail.participationDate}</TableCell>
-                        <TableCell>{detail.eventCountry}</TableCell>
-                        <TableCell>{selectedRow.conferenceName}</TableCell>
-                        <TableCell>{detail.sessionName}</TableCell>
-                        <TableCell>{detail.sponsorName}</TableCell>
-                        <TableCell>{detail.role}</TableCell>
-                        <TableCell>
-                          <IconButton
-                            aria-label="expand row"
-                            size="small"
-                            onClick={() => handleDetailRowClick(index)}
-                          >
-                            {expandedDetailRow === index ? <ExpandLessIcon /> : <ExpandMoreIcon />}
-                          </IconButton>
-                        </TableCell>
-                      </TableRow>
-                      <TableRow>
-                        <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={10}>
-                          <Collapse in={expandedDetailRow === index} timeout="auto" unmountOnExit>
-                            <Box margin={1}>
-                              <Typography variant="h6" gutterBottom component="div">
-                                Event Details
-                              </Typography>
-                              <Typography variant="body2">
-                                <strong>Start Date:</strong> {detail.eventDetails.startDate}<br />
-                                <strong>End Date:</strong> {detail.eventDetails.endDate}<br />
-                                <strong>Location:</strong> {detail.eventDetails.location}<br />
-                                <strong>City:</strong> {detail.eventDetails.city}<br />
-                                <strong>State:</strong> {detail.eventDetails.state}<br />
-                                <strong>Abstract:</strong> {detail.eventDetails.abstract}<br />
-                                <strong>Session Type:</strong> {detail.eventDetails.sessionType}
-                              </Typography>
-                            </Box>
-                          </Collapse>
-                        </TableCell>
-                      </TableRow>
-                    </React.Fragment>
-                  ))}
-                </TableBody>
-              </Table>
-            </TableContainer>
-          </Box>
+          <TableContainer component={Paper} id="scrollable-table" sx={{ maxHeight: '90%', overflow: 'auto' }}>
+            <Table stickyHeader aria-label="detailed table">
+              <TableHead sx={{ backgroundColor: '#54C1DF' }}>
+                <TableRow>
+                  <TableCell><strong>Participation Date</strong></TableCell>
+                  <TableCell><strong>Event Country</strong></TableCell>
+                  <TableCell><strong>Conference Name</strong></TableCell>
+                  <TableCell><strong>Session Name</strong></TableCell>
+                  <TableCell><strong>Sponsor Name</strong></TableCell>
+                  <TableCell><strong>Role</strong></TableCell>
+                  <TableCell></TableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                {selectedRow.eventDetails.slice(detailsPage * detailsRowsPerPage, detailsPage * detailsRowsPerPage + detailsRowsPerPage).map((detail, index) => (
+                  <React.Fragment key={index}>
+                    <TableRow
+                      sx={{ '&:hover': { backgroundColor: '#F0F0F0', cursor: 'pointer' } }}
+                      onClick={() => handleDetailRowClick(index)}
+                    >
+                      <TableCell>{detail.participationDate}</TableCell>
+                      <TableCell>{detail.eventCountry}</TableCell>
+                      <TableCell>{selectedRow.conferenceName}</TableCell>
+                      <TableCell>{detail.sessionName}</TableCell>
+                      <TableCell>{detail.sponsorName}</TableCell>
+                      <TableCell>{detail.role}</TableCell>
+                      <TableCell>
+                        <IconButton
+                          aria-label="expand row"
+                          size="small"
+                          onClick={() => handleDetailRowClick(index)}
+                        >
+                          {expandedDetailRow === index ? <ExpandLessIcon /> : <ExpandMoreIcon />}
+                        </IconButton>
+                      </TableCell>
+                    </TableRow>
+                    <TableRow>
+                      <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={10}>
+                        <Collapse in={expandedDetailRow === index} timeout="auto" unmountOnExit>
+                          <Box margin={1}>
+                            <Typography variant="h6" gutterBottom component="div">
+                              Event Details
+                            </Typography>
+                            <Typography variant="body2">
+                              <strong>Start Date:</strong> {detail.eventDetails.startDate}<br />
+                              <strong>End Date:</strong> {detail.eventDetails.endDate}<br />
+                              <strong>Location:</strong> {detail.eventDetails.location}<br />
+                              <strong>City:</strong> {detail.eventDetails.city}<br />
+                              <strong>State:</strong> {detail.eventDetails.state}<br />
+                              <strong>Abstract:</strong> {detail.eventDetails.abstract}<br />
+                              <strong>Session Type:</strong> {detail.eventDetails.sessionType}
+                            </Typography>
+                          </Box>
+                        </Collapse>
+                      </TableCell>
+                    </TableRow>
+                  </React.Fragment>
+                ))}
+              </TableBody>
+            </Table>
+          </TableContainer>
         </>
       )}
     </Box>

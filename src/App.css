@@ -3,6 +3,8 @@ html, body, #root {
   min-width: 1400px;
   margin: 0;
   padding: 0;
+  overflow-y: hidden;
+  font-family: "Aptos" !important
   
 }
 

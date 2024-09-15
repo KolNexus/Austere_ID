@@ -23,15 +23,9 @@ const ChartsContainer = () => {
           Go To Profiles
         </Button>
       </Box>
-      <Grid container spacing={3}>
+      <Grid container spacing={2}>
         <Grid item xs={12} md={3}>
           <HeatMap />
-        </Grid>
-        <Grid item xs={12} md={3}>
-          <ParetoChart type="states" title="Top 10 States" />
-        </Grid>
-        <Grid item xs={12} md={3}>
-          <ParetoChart type="cities" title="Top 10 Cities" />
         </Grid>
         <Grid item xs={12} md={3}>
           <DonutChart type="affiliations" title="Top 10 Affiliations" />
@@ -40,16 +34,16 @@ const ChartsContainer = () => {
           <DonutChart type="specialties" title="Top 10 Specialties" />
         </Grid>
         <Grid item xs={12} md={3}>
-          <ParetoChart type="conferences" title="Top 10 Conferences" />
-        </Grid>
-        <Grid item xs={12} md={3}>
           <PieChart title="Top 10 Keywords in Publications" />
         </Grid>
         <Grid item xs={12} md={3}>
-          Top 10 Drugs
+          <ParetoChart type="conferences" title="Top 10 Conferences" />
         </Grid>
         <Grid item xs={12} md={3}>
-          <ParetoChart type="kol-trials-distribution" title="Distribution of KOLs by Trials" />
+          <ParetoChart type="states" title="Top 10 States" />
+        </Grid>
+        <Grid item xs={12} md={3}>
+          <ParetoChart type="cities" title="Top 10 Cities" />
         </Grid>
         <Grid item xs={12} md={3}>
           <ParetoChart type="kol-conference-distribution" title="Distribution of KOLs by Conferences" />
@@ -58,10 +52,14 @@ const ChartsContainer = () => {
           <ParetoChart type="kol-publication-distribution" title="Distribution of KOLs by Publications" />
         </Grid>
         <Grid item xs={12} md={3}>
+          <ParetoChart type="kol-trials-distribution" title="Distribution of KOLs by Trials" />
+        </Grid>
+        <Grid item xs={12} md={3}>
           <ParetoChart type="kol-association-distribution" title="Distribution of KOLs by Associations" />
         </Grid>
-
-        {/* Add more ParetoChart components as needed */}
+        <Grid item xs={12} md={3}>
+        {/* Add more ParetoChart components as needed like Top 10 Drugs*/}
+        </Grid>
       </Grid>
     </Container>
   );

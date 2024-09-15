@@ -1,0 +1,154 @@
+.cont{
+  height: 100vh;
+  width: 100vw;
+  display: flex;
+  align-items: center;
+  background-color: #EDE8F5  ;
+}
+.auth-container {
+  display: flex;
+  height: 80%;
+  width: 80%;
+  border-radius: 50%;
+  margin: auto;
+  z-index: 100;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Adjust the values as needed */
+
+}
+
+.auth-image {
+  background-image: url("../../../public/image.png"); /* Make sure the image path is correct */
+  background-size: cover;
+  background-position: center;
+  width:60%
+}
+
+.custom-sign-in {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 40px;
+  background: #fff;
+}
+
+.auth-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.auth-header h2 {
+  color: #008B8B;
+  margin: 0;
+  font-size: 24px;
+}
+
+.auth-header p {
+  color: #008B8B;
+  cursor: pointer;
+}
+
+.form-group {
+  margin-bottom: 20px;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 5px;
+  color: #333;
+}
+
+.form-group input {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 16px;
+}
+
+.password-input {
+  position: relative;
+}
+
+.password-toggle {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+.sign-in-button {
+  width: 100%;
+  padding: 10px;
+  background-color: #008B8B;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  font-size: 16px;
+  cursor: pointer;
+  margin-top: 20px;
+}
+
+.sign-in-button:hover {
+  background-color: #006666;
+}
+
+.forgot-password {
+  text-align: center;
+  margin-top: 20px;
+}
+
+.forgot-password a {
+  color: #008B8B;
+  text-decoration: none;
+}
+
+@media (max-width: 768px) {
+  .auth-container {
+    flex-direction: column;
+  }
+
+  .auth-image {
+    height: 200px;
+  }
+
+  .custom-sign-in {
+    padding: 20px;
+  }
+}
+/* Add this to your existing CognitoCustomUI.css */
+.error-message {
+  color: #ff0000;
+  margin-bottom: 15px;
+  text-align: center;
+}
+
+.password-policy {
+  background-color: #f8f8f8;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  padding: 10px;
+  margin-bottom: 20px;
+}
+
+.password-policy h3 {
+  margin-top: 0;
+  font-size: 16px;
+  color: #333;
+}
+
+.password-policy ul {
+  padding-left: 20px;
+  margin-bottom: 0;
+}
+
+.password-policy li {
+  font-size: 14px;
+  color: #666;
+  margin-bottom: 5px;
+}

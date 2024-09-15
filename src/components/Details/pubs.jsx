@@ -4,7 +4,7 @@ import {
 } from '@mui/material';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
-import axios from 'axios';
+import apiClient from '../../utils/apiClient';
 
 // Helper function to format publication data
 const createPubData = (id, date, journalName, article, meshTerms, abstract, role, publicationType, pid, link) => ({
@@ -71,7 +71,7 @@ const Pubs = ({ kolId }) => {
   useEffect(() => {
     const fetchPublications = async () => {
       try {
-        const response = await axios.get(`${process.env.REACT_APP_SERVER_URL}/api/publications`, {
+        const response = await apiClient.get(`/publications`, {
           params: { kolId }
         });
         const publications = response.data;
@@ -115,8 +115,8 @@ const Pubs = ({ kolId }) => {
   ));
 
   return (
-    <Box sx={{ flexGrow: 1, width: '100%', p: 2, overflow: 'hidden', height: '100vh' }}>
-      <div style={{ display: "flex", justifyContent: "space-between" }}>
+    <Box sx={{ flexGrow: 1, width: '100%', px: 2,py:1, overflow: 'hidden', height: '100%' }}>
+      <div style={{ display: "flex", justifyContent: "space-between",height:"8%" }}>
         <Typography variant="h6" gutterBottom color="#3D52A0">
           List of Publications
         </Typography>
@@ -142,7 +142,7 @@ const Pubs = ({ kolId }) => {
       ) : filteredPubs.length === 0 ? (
         <Typography variant="body1">No publications found.</Typography>
       ) : (
-        <TableContainer component={Paper} sx={{ maxHeight: '70vh', overflow: 'auto' }}>
+        <TableContainer component={Paper} sx={{ maxHeight: '90%', overflow: 'auto' }}>
           <Table stickyHeader aria-label="collapsible table">
             <TableHead sx={{ backgroundColor: '#54C1DF' }}>
               <TableRow>

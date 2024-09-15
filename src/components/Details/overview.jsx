@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { Box, Typography, Grid, LinearProgress, Tooltip, Card, CardContent, Divider } from '@mui/material';
-import axios from 'axios';
+import { Box, Typography, Grid, LinearProgress, Tooltip, Divider } from '@mui/material';
+import apiClient from '../../utils/apiClient';
 
 const Overview = ({ kolDetails, setValue }) => {
   const [bioText, setBioText] = useState('');
@@ -17,14 +17,13 @@ const Overview = ({ kolDetails, setValue }) => {
   useEffect(() => {
     const fetchWeightages = async () => {
       try {
-        const response = await axios.get(`${process.env.REACT_APP_SERVER_URL}/api/weightages/all`);
+        const response = await apiClient.get(`/weightages/all`);
         const weightages = response.data.reduce((acc, item) => {
           acc[item.column_name.toLowerCase().replace(/ /g, '')] = parseFloat(item.max);
           return acc;
         }, {});
         setMaxValues(weightages);
 
-        // Assuming median values are also provided in the same API response
         const medians = response.data.reduce((acc, item) => {
           acc[item.column_name.toLowerCase().replace(/ /g, '')] = parseFloat(item.median);
           return acc;
@@ -39,19 +38,7 @@ const Overview = ({ kolDetails, setValue }) => {
   }, []);
 
   useEffect(() => {
-    const animateBioText = async () => {
-      const text = kolDetails['Biosummary'] || '';
-      const delay = 10;
-      let tempText = '';
-      for (let i = 0; i <= text.length; i++) {
-        tempText = text.slice(0, i);
-        setBioText(tempText);
-        await new Promise(resolve => setTimeout(resolve, delay));
-      }
-    };
-  
-    animateBioText();
-  
+    setBioText(kolDetails['Biosummary'] || '');
     setProgressValues({
       congress: kolDetails['Congress Count'],
       trials: kolDetails['Key topic Trials Count'],
@@ -61,12 +48,12 @@ const Overview = ({ kolDetails, setValue }) => {
     });
   }, [kolDetails, maxValues]);
 
-  const ProgressWithLabel = ({ value, label, targetValue, maxValue, medianValue, color }) => {
+  const ProgressWithLabel = ({ value, label, targetValue, maxValue, medianValue, color, onClick }) => {
     const title = `${targetValue} / ${maxValue} , Median:${medianValue}`;
     
     return (
       <Tooltip title={<span>{title}</span>} arrow>
-        <div>
+        <div onClick={onClick} style={{ cursor: 'pointer' }}>
           <Typography variant="body1">{label}</Typography>
           <Box sx={{ mb: 2, width: '100%', position: 'relative' }}>
             <LinearProgress 
@@ -74,7 +61,7 @@ const Overview = ({ kolDetails, setValue }) => {
               value={(value / maxValue) * 100} 
               sx={{
                 '& .MuiLinearProgress-bar': {
-                backgroundColor: color}, // Change the bar background color
+                backgroundColor: color},
                 backgroundColor:"#ccc", height: 30, borderRadius: 5, marginTop: "20px"
               }} 
             />
@@ -94,9 +81,8 @@ const Overview = ({ kolDetails, setValue }) => {
     );
   };
   
-  
   return (
-    <Box sx={{ flexGrow: 1, width: '100%', p: 2 }}>
+    <Box sx={{ flexGrow: 1, width: '100%', px: 2, py: 1 }}>
       <Grid container spacing={2}>
         <Grid item xs={12}>
           <Typography variant="h6" gutterBottom color="#3D52A0">Bio Summary</Typography>
@@ -108,62 +94,61 @@ const Overview = ({ kolDetails, setValue }) => {
         <Grid item xs={12}>
           <Typography variant="h6" gutterBottom color="#3D52A0">Statistics</Typography>
         </Grid>
-        <Grid item xs={12} sx={{ mb: 2 }}>
-          <Grid container spacing={2} justifyContent="space-between">
-            <Grid item xs={12} sm={4}>
-              <Box
-                component={Card}
-                variant="outlined"
-                onClick={() => setValue('events')}
-                sx={{ cursor: 'pointer', '&:hover': { backgroundColor: '#EDE8F5' } }}
-              >
-                <CardContent>
-                  <Typography variant="body1"><strong>Total Events Attended:</strong> {kolDetails.totalEvents}</Typography>
-                </CardContent>
-              </Box>
-            </Grid>
-            <Grid item xs={12} sm={4}>
-              <Box
-                component={Card}
-                variant="outlined"
-                onClick={() => setValue('clinical-trials')}
-                sx={{ cursor: 'pointer', '&:hover': { backgroundColor: '#EDE8F5' } }}
-              >
-                <CardContent>
-                  <Typography variant="body1"><strong>Trials Participated:</strong> {kolDetails.totalTrials}</Typography>
-                </CardContent>
-              </Box>
-            </Grid>
-            <Grid item xs={12} sm={4}>
-              <Box
-                component={Card}
-                variant="outlined"
-                onClick={() => setValue('publications')}
-                sx={{ cursor: 'pointer', '&:hover': { backgroundColor: '#EDE8F5' } }}
-              >
-                <CardContent>
-                  <Typography variant="body1"><strong>Publication Count:</strong> {kolDetails.totalPublications}</Typography>
-                </CardContent>
-              </Box>
-            </Grid>
-          </Grid>
-        </Grid>
         <Grid item xs={12}>
           <Grid container spacing={2}>
             <Grid item xs={6}>
-              <ProgressWithLabel value={progressValues.congress} label="Congress" targetValue={kolDetails['Congress Count']} maxValue={maxValues.congresscount} medianValue={medianValues.congresscount} color={"#3D52A0"} />
+              <ProgressWithLabel 
+                value={progressValues.congress} 
+                label="Congress" 
+                targetValue={kolDetails['Congress Count']} 
+                maxValue={maxValues.congresscount} 
+                medianValue={medianValues.congresscount} 
+                color="#3D52A0"
+                onClick={() => setValue('events')}
+              />
             </Grid>
             <Grid item xs={6}>
-              <ProgressWithLabel value={progressValues.trials} label="Trials" targetValue={kolDetails['Key topic Trials Count']} maxValue={maxValues.keytopictrialscount} medianValue={medianValues.keytopictrialscount} color={"#7091E6"}/>
+              <ProgressWithLabel 
+                value={progressValues.trials} 
+                label="Trials" 
+                targetValue={kolDetails['Key topic Trials Count']} 
+                maxValue={maxValues.keytopictrialscount} 
+                medianValue={medianValues.keytopictrialscount} 
+                color="#7091E6"
+                onClick={() => setValue('clinical-trials')}
+              />
             </Grid>
             <Grid item xs={6}>
-              <ProgressWithLabel value={progressValues.investigator} label="Principal Investigator" targetValue={kolDetails['Principal Investigator']} maxValue={maxValues.principalinvestigator} medianValue={medianValues.principalinvestigator} color={"#7091E6"} />
+              <ProgressWithLabel 
+                value={progressValues.investigator} 
+                label="Principal Investigator" 
+                targetValue={kolDetails['Principal Investigator']} 
+                maxValue={maxValues.principalinvestigator} 
+                medianValue={medianValues.principalinvestigator} 
+                color="#7091E6"
+              />
             </Grid>
             <Grid item xs={6}>
-              <ProgressWithLabel value={progressValues.firstAuthor} label="First Author Pubs" targetValue={kolDetails['First Author Pubs Count']} maxValue={maxValues.firstauthorpubscount} medianValue={medianValues.firstauthorpubscount} color={"#3D52A0"}/>
+              <ProgressWithLabel 
+                value={progressValues.firstAuthor} 
+                label="First Author Pubs" 
+                targetValue={kolDetails['First Author Pubs Count']} 
+                maxValue={maxValues.firstauthorpubscount} 
+                medianValue={medianValues.firstauthorpubscount} 
+                color="#3D52A0"
+                onClick={() => setValue('publications')}
+              />
             </Grid>
             <Grid item xs={6}>
-              <ProgressWithLabel value={progressValues.keyTopic} label="Key Topic Pubs" targetValue={kolDetails['Key topic Pubs Count']} maxValue={maxValues.keytopicpubscount} medianValue={medianValues.keytopicpubscount} color={"#3D52A0"} />
+              <ProgressWithLabel 
+                value={progressValues.keyTopic} 
+                label="Key Topic Pubs" 
+                targetValue={kolDetails['Key topic Pubs Count']} 
+                maxValue={maxValues.keytopicpubscount} 
+                medianValue={medianValues.keytopicpubscount} 
+                color="#3D52A0"
+                onClick={() => setValue('publications')}
+              />
             </Grid>
           </Grid>
         </Grid>
