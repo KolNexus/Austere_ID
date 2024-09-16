@@ -6,7 +6,7 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import ExpandLessIcon from '@mui/icons-material/ExpandLess';
 import apiClient from '../../utils/apiClient';
 
-const handleNullValue = (value) => (value === "NULL" ? '' : value);
+const handleNullValue = (value) => (value === "NULL" || value === "null" ? '' : value);
 
 const Body = ({ kolId, handleBackClick }) => {
   const [allEvents, setAllEvents] = useState([]);

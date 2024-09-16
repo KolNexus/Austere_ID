@@ -6,7 +6,7 @@ import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import apiClient from '../../utils/apiClient';
 
-const handleNullValue = (value) => (value === "NULL" ? '' : value);
+const handleNullValue = (value) => (value === "NULL" || value === "null" ? '' : value);
 
 // Helper function to format association data
 const createAssociationData = (id, organizationName, organizationType, boardCommittee, positionRole, startDate, endDate, affiliationType, organizationCity, organizationState, organizationCountry) => ({
