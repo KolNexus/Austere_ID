@@ -6,19 +6,21 @@ import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import apiClient from '../../utils/apiClient';
 
+const handleNullValue = (value) => (value === "NULL" ? '' : value);
+
 // Helper function to format association data
 const createAssociationData = (id, organizationName, organizationType, boardCommittee, positionRole, startDate, endDate, affiliationType, organizationCity, organizationState, organizationCountry) => ({
   id,
-  organizationName,
-  organizationType,
-  boardCommittee,
-  positionRole,
-  startDate,
-  endDate,
-  affiliationType,
-  organizationCity,
-  organizationState,
-  organizationCountry,
+  organizationName: handleNullValue(organizationName),
+  organizationType: handleNullValue(organizationType),
+  boardCommittee: handleNullValue(boardCommittee),
+  positionRole: handleNullValue(positionRole),
+  startDate: handleNullValue(startDate),
+  endDate: handleNullValue(endDate),
+  affiliationType: handleNullValue(affiliationType),
+  organizationCity: handleNullValue(organizationCity),
+  organizationState: handleNullValue(organizationState),
+  organizationCountry: handleNullValue(organizationCountry),
 });
 
 const AssociationRow = ({ row }) => {

@@ -6,21 +6,23 @@ import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import apiClient from '../../utils/apiClient';
 
+const handleNullValue = (value) => (value === "NULL" ? '' : value);
+
 // Helper function to format trial data
 const createTrialData = (id, title, sponsor, phases, completionDate, recruitment, conditions, interventions, age, fundedBys, startDate, tid, link) => ({
-  id,
-  title,
-  sponsor,
-  phases,
-  completionDate,
-  recruitment,
-  conditions,
-  interventions,
-  age,
-  fundedBys,
-  startDate,
-  tid,
-  link
+  id: handleNullValue(id),
+  title: handleNullValue(title),
+  sponsor: handleNullValue(sponsor),
+  phases: handleNullValue(phases),
+  completionDate: handleNullValue(completionDate),
+  recruitment: handleNullValue(recruitment),
+  conditions: handleNullValue(conditions),
+  interventions: handleNullValue(interventions),
+  age: handleNullValue(age),
+  fundedBys: handleNullValue(fundedBys),
+  startDate: handleNullValue(startDate),
+  tid: handleNullValue(tid),
+  link: handleNullValue(link)
 });
 
 const TrialRow = ({ row }) => {

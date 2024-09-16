@@ -6,18 +6,20 @@ import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import apiClient from '../../utils/apiClient';
 
+const handleNullValue = (value) => (value === "NULL" ? '' : value);
+
 // Helper function to format publication data
 const createPubData = (id, date, journalName, article, meshTerms, abstract, role, publicationType, pid, link) => ({
-  id,
-  date,
-  journalName,
-  article,
-  meshTerms,
-  abstract,
-  role,
-  publicationType,
-  pid,
-  link
+  id: handleNullValue(id),
+  date: handleNullValue(date),
+  journalName: handleNullValue(journalName),
+  article: handleNullValue(article),
+  meshTerms: handleNullValue(meshTerms),
+  abstract: handleNullValue(abstract),
+  role: handleNullValue(role),
+  publicationType: handleNullValue(publicationType),
+  pid: handleNullValue(pid),
+  link: handleNullValue(link)
 });
 
 const PubRow = ({ row }) => {

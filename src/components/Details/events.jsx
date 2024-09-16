@@ -6,6 +6,8 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import ExpandLessIcon from '@mui/icons-material/ExpandLess';
 import apiClient from '../../utils/apiClient';
 
+const handleNullValue = (value) => (value === "NULL" ? '' : value);
+
 const Body = ({ kolId, handleBackClick }) => {
   const [allEvents, setAllEvents] = useState([]);
   const [openRow, setOpenRow] = useState(null);
@@ -40,21 +42,21 @@ const Body = ({ kolId, handleBackClick }) => {
   };
 
   const rows = allEvents.map((event, index) => ({
-    id: `${event['Event ID']}-${index}`, // Ensure the key is unique by adding the index
-    participationDate: event['Start Date'],
-    eventCountry: event['Event Country'],
-    conferenceName: event['Conference Name'],
-    sessionName: event['Session Name; Topic Title'],
-    sponsorName: event['Sponsor Name'],
-    role: event['Role'],
+    id: `${handleNullValue(event['Event ID'])}-${index}`,
+    participationDate: handleNullValue(event['Start Date']),
+    eventCountry: handleNullValue(event['Event Country']),
+    conferenceName: handleNullValue(event['Conference Name']),
+    sessionName: handleNullValue(event['Session Name; Topic Title']),
+    sponsorName: handleNullValue(event['Sponsor Name']),
+    role: handleNullValue(event['Role']),
     eventDetails: {
-      startDate: event['Event Start Date'],
-      endDate: event['Event End Date'],
-      location: event['Event Location'],
-      city: event['Event City'],
-      state: event['Event State'],
-      abstract: event['Abstract'],
-      sessionType: event['Session Type'],
+      startDate: handleNullValue(event['Event Start Date']),
+      endDate: handleNullValue(event['Event End Date']),
+      location: handleNullValue(event['Event Location']),
+      city: handleNullValue(event['Event City']),
+      state: handleNullValue(event['Event State']),
+      abstract: handleNullValue(event['Abstract']),
+      sessionType: handleNullValue(event['Session Type']),
     }
   }));
 
@@ -154,7 +156,28 @@ const Events = ({ kolId }) => {
         const response = await apiClient.get(`/events`, {
           params: { kolId }
         });
-        const events = response.data;
+        const events = response.data.map(event => ({
+          ...event,
+          slNo: handleNullValue(event.slNo),
+          conferenceName: handleNullValue(event.conferenceName),
+          sessionCount: handleNullValue(event.sessionCount),
+          eventDetails: event.eventDetails.map(detail => ({
+            participationDate: handleNullValue(detail.participationDate),
+            eventCountry: handleNullValue(detail.eventCountry),
+            sessionName: handleNullValue(detail.sessionName),
+            sponsorName: handleNullValue(detail.sponsorName),
+            role: handleNullValue(detail.role),
+            eventDetails: {
+              startDate: handleNullValue(detail.eventDetails.startDate),
+              endDate: handleNullValue(detail.eventDetails.endDate),
+              location: handleNullValue(detail.eventDetails.location),
+              city: handleNullValue(detail.eventDetails.city),
+              state: handleNullValue(detail.eventDetails.state),
+              abstract: handleNullValue(detail.eventDetails.abstract),
+              sessionType: handleNullValue(detail.eventDetails.sessionType),
+            }
+          }))
+        }));
         setEvents(events);
       } catch (error) {
         console.error('Error fetching Events:', error);
