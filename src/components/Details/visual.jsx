@@ -31,13 +31,13 @@ const theme = createTheme({
     MuiTablePagination: {
       styleOverrides: {
         selectLabel: {
-          display:"contents"
+          display: "contents"
         },
         spacer: {
           flex: 'none', // This removes the flex grow
         },
-        displayedRows:{
-          margin:"auto"
+        displayedRows: {
+          margin: "auto"
         }
       },
     },
@@ -81,8 +81,8 @@ const Visual = () => {
 
   return (
     <ThemeProvider theme={theme}>
-      <Box sx={{ display: 'flex', flexDirection: 'row', overflowY: 'scroll' }}>
-        <Box sx={{ width: '25%', minWidth: '300px', padding: '16px', backgroundColor: '#EDE8F5',height:'max-content'}}>
+      <Box sx={{ display: 'flex', flexDirection: 'row', overflowY: 'scroll', width: "100%" }}>
+        <Box sx={{ width: '23%', minWidth: '300px', padding: '16px', backgroundColor: '#EDE8F5', height: 'max-content' }}>
           <div style={{ textAlign: 'center', marginBottom: '8px' }}>
             <Avatar
               src={kolDetails['Image']}
@@ -151,8 +151,8 @@ const Visual = () => {
             </ListItem>
           </List>
         </Box>
-        <Box sx={{ flexGrow: 1, display: 'flex', flexDirection: 'column',height:'100%' }}>
-          <AppBar position="relative" sx={{ zIndex: (theme) => theme.zIndex.drawer + 1, backgroundColor: '#8697C4'}}>
+        <Box sx={{ flexGrow: 1, display: 'flex', flexDirection: 'column', height: '100%', width: "77%" }}>
+          <AppBar position="relative" sx={{ zIndex: (theme) => theme.zIndex.drawer + 1, backgroundColor: '#8697C4' }}>
             <Toolbar sx={{ display: 'flex', justifyContent: 'flex-end' }}>
               <Tabs
                 value={value}
@@ -175,8 +175,8 @@ const Visual = () => {
               </Tabs>
             </Toolbar>
           </AppBar>
-          <Box component="main" sx={{ flexGrow: 1, py: 1 ,height:"92%"}}>
-            <Container sx={{ flexGrow: 1, overflow: 'auto', mx: 0, px: 0,height:"100%" }}>
+          <Box component="main" sx={{ flexGrow: 1, py: 1, height: "92%" }}>
+            <Container sx={{ flexGrow: 1, overflow: 'auto', mx: 0, px: 0, height: "100%" }}>
               <Suspense fallback={<CircularProgress />}>
                 {/* Render content based on tab selection */}
                 {value === 'overview' ? (

@@ -245,21 +245,39 @@ const Content = () => {
               }}
             />
           </Box>
-          <Box sx={{
-            width: '8%',
-            display: 'flex', alignItems: 'center',
+          <Box className="circular-container" sx={{
+            width: '4%',
+            display: 'flex',
+            alignItems: 'center',
             justifyContent: 'space-evenly',
             backgroundColor: '#ADBBDA',
-            borderRadius: '5px',
+            borderTopLeftRadius: '5px',
+            borderBottomLeftRadius: '5px',
             padding: '5px',
-            fontWeight: 'bold',
-            color: 'black',
-            gap: "0px"
+            marginRight: "1px"
           }}>
-            <Typography variant="body2">Rank | Score</Typography>
+            <Typography variant="body2" sx={{ fontWeight: 'bold', color: 'black' }}>
+              Rank
+            </Typography>
+          </Box>
+          <Box className="circular-container" sx={{
+            width: '4%',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'space-evenly',
+            backgroundColor: '#ADBBDA',
+            borderTopRightRadius: '5px',
+            borderBottomRightRadius: '5px',
+            padding: '5px',
+            marginLeft: "1px"
+
+          }}>
+            <Typography variant="body2" sx={{ fontWeight: 'bold', color: 'black' }}>
+              Score
+            </Typography>
           </Box>
 
-          <Box sx={{ width: '65%', display: 'flex', flexDirection: 'row', justifyContent: 'space-around' }}>
+          <Box sx={{ width: '64%', display: 'flex', flexDirection: 'row', justifyContent: 'space-around' }}>
             <Typography variant="body2" color="black" sx={{ width: "25%", display: "flex", justifyContent: "center" }}>
               <span style={{ color: colorMapping.congress }}>■ </span>Congress
             </Typography>
@@ -319,15 +337,34 @@ const Content = () => {
 
                   {/* Rank and Score */}
                   <Box className="circular-container" sx={{
-                    width: '8%',
-                    display: 'flex', alignItems: 'center',
+                    width: '4%',
+                    display: 'flex',
+                    alignItems: 'center',
                     justifyContent: 'space-evenly',
                     backgroundColor: '#ADBBDA',
-                    borderRadius: '5px',
+                    borderTopLeftRadius: '5px',
+                    borderBottomLeftRadius: '5px',
                     padding: '5px',
+                    marginRight: "1px"
                   }}>
                     <Typography variant="body2" sx={{ fontWeight: 'bold', color: 'black' }}>
-                      {doctor['KOL Rank']} | {doctor['KOL Score']}
+                      {doctor['KOL Rank']}
+                    </Typography>
+                  </Box>
+                  <Box className="circular-container" sx={{
+                    width: '4%',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'space-evenly',
+                    backgroundColor: '#ADBBDA',
+                    borderTopRightRadius: '5px',
+                    borderBottomRightRadius: '5px',
+                    padding: '5px',
+                    marginLeft: "1px"
+
+                  }}>
+                    <Typography variant="body2" sx={{ fontWeight: 'bold', color: 'black' }}>
+                      {doctor['KOL Score']}
                     </Typography>
                   </Box>
 
