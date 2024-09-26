@@ -44,6 +44,10 @@ const Header = ({ signOut, isAdmin }) => {
     navigate('/home');
   };
 
+  const handleListClick = () => {
+    navigate('/');
+  };
+
   return (
     <header className="header">
       <div className="logo-div">
@@ -67,7 +71,17 @@ const Header = ({ signOut, isAdmin }) => {
           </Button>
         )}
       </div>
-
+      <div>
+        {!isAdmin && location.pathname !== '/' && (
+          <Button
+            variant="contained"
+            onClick={handleListClick}
+            sx={{ height: "30px", backgroundColor: '#8697C4',marginLeft:"5px" }}
+          >
+            Go To List
+          </Button>
+        )}
+      </div>
       <div className="user-menu">
         <Button
           variant="contained"

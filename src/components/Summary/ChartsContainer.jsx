@@ -1,27 +1,18 @@
 import React from 'react';
-import { Container, Grid, Typography, Box, Button } from '@mui/material';
+import { Container, Grid, Typography, Box } from '@mui/material';
 import ParetoChart from './ParetoChart'; // Ensure you have the correct path
 import DonutChart from './DonutChart'; // Import the DonutChart component
 import PieChart from './PieChart'; // Import the PieChart component
 import HeatMap from './HeatMap'; // Import the HeatMap component
-import { useNavigate } from 'react-router-dom';
-
 
 const ChartsContainer = () => {
-  const navigate = useNavigate();
 
-  const handleClick = () => {
-    navigate(`/`);
-  };
   return (
     <Container style={{ maxWidth: "100%",height:"90vh",backgroundColor:'#EDE8F5', overflowY:'scroll' }}>
       <Box sx={{ display: "flex", justifyContent: "space-between",alignItems:"center" }}>
         <Typography variant="h5" gutterBottom style={{ color: '#3D52A0', fontWeight: '600', marginTop: '20px' }}>
           Overall Summary
         </Typography>
-        <Button variant="contained"  onClick={handleClick} sx={{height:"30px", backgroundColor:'#8697C4'}}>
-          Go To Profiles
-        </Button>
       </Box>
       <Grid container spacing={2}>
         <Grid item xs={12} md={3}>
