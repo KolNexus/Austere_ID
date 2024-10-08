@@ -1,18 +1,20 @@
 import React, { useState, useEffect, useCallback, useRef } from 'react';
 import ForceGraph2D from 'react-force-graph-2d';
 import apiClient from '../../utils/apiClient';
-import { Select, MenuItem, Box, Typography } from '@mui/material';
+import { Select, MenuItem, Box, Typography, CircularProgress } from '@mui/material';
 
 const NetworkMap = ({ kolId }) => {
   const [graphData, setGraphData] = useState({ nodes: [], links: [] });
   const [selectedOption, setSelectedOption] = useState('all-connections');
   const [iconImage, setIconImage] = useState(null);
   const [selectedNode, setSelectedNode] = useState(null);
+  const [loading, setLoading] = useState(true);  // Track loading state
 
   // Reference for ForceGraph2D component to manipulate zoom
   const graphRef = useRef(null);
 
   const fetchGraphData = useCallback(async (endpoint) => {
+    setLoading(true);  // Show loading spinner
     try {
       const response = await apiClient.get(`/kol/${kolId}/${endpoint}`);
       const data = response.data;
@@ -20,6 +22,9 @@ const NetworkMap = ({ kolId }) => {
     } catch (error) {
       console.error('Error fetching KOL connections:', error);
       setGraphData({ nodes: [], links: [] }); // Set to empty if there's an error
+    }
+    finally {
+      setLoading(false);  // Hide loading spinner
     }
   }, [kolId]);
 
@@ -193,7 +198,19 @@ const NetworkMap = ({ kolId }) => {
         </Select>
       </Box>
 
-      {graphData.nodes.length === 0 ? (
+      {loading ? (
+        // Show the loading spinner while data is being fetched
+        <Box
+          sx={{
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+            height: '100%',
+          }}
+        >
+          <CircularProgress sx={{ color: '#8697C4' }} />
+        </Box>
+      ) : graphData.nodes.length === 0 && !loading ? (
         <Box
           sx={{
             display: 'flex',

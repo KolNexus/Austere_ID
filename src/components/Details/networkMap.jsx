@@ -1,18 +1,20 @@
 import React, { useState, useEffect, useCallback, useRef } from 'react';
 import ForceGraph2D from 'react-force-graph-2d';
 import apiClient from '../../utils/apiClient';
-import { Select, MenuItem, Box, Typography } from '@mui/material';
+import { Select, MenuItem, Box, Typography, CircularProgress } from '@mui/material';
 
 const NetworkMap = ({ kolId }) => {
   const [graphData, setGraphData] = useState({ nodes: [], links: [] });
   const [selectedOption, setSelectedOption] = useState('all-connections');
   const [iconImage, setIconImage] = useState(null);
   const [selectedNode, setSelectedNode] = useState(null);
+  const [loading, setLoading] = useState(true);  // Track loading state
 
   // Reference for ForceGraph2D component to manipulate zoom
   const graphRef = useRef(null);
 
   const fetchGraphData = useCallback(async (endpoint) => {
+    setLoading(true);  // Show loading spinner
     try {
       const response = await apiClient.get(`/kol/${kolId}/${endpoint}`);
       const data = response.data;
@@ -20,6 +22,8 @@ const NetworkMap = ({ kolId }) => {
     } catch (error) {
       console.error('Error fetching KOL connections:', error);
       setGraphData({ nodes: [], links: [] }); // Set to empty if there's an error
+    } finally {
+      setLoading(false);  // Hide loading spinner
     }
   }, [kolId]);
 
@@ -44,14 +48,14 @@ const NetworkMap = ({ kolId }) => {
   const prepareGraphData = (connections) => {
     const nodes = {};
     const linksMap = {};  // Use a map to group links by KOL1 and KOL2
-  
+
     connections.forEach((connection) => {
       const {
         KOL1, KOL2, value, type,
         KOL1_FirstName, KOL1_LastName,
         KOL2_FirstName, KOL2_LastName
       } = connection;
-  
+
       // Create or update nodes
       if (!nodes[KOL1]) {
         nodes[KOL1] = {
@@ -59,17 +63,17 @@ const NetworkMap = ({ kolId }) => {
           name: KOL1_FirstName && KOL1_LastName ? `${KOL1_FirstName} ${KOL1_LastName}` : KOL1,
         };
       }
-  
+
       if (!nodes[KOL2]) {
         nodes[KOL2] = {
           id: KOL2,
           name: KOL2_FirstName && KOL2_LastName ? `${KOL2_FirstName} ${KOL2_LastName}` : KOL2,
         };
       }
-  
+
       // Generate a unique key for the pair of nodes
       const linkKey = `${KOL1}-${KOL2}`;
-      
+
       // Group links by KOL1 and KOL2, accumulating the different types
       if (!linksMap[linkKey]) {
         linksMap[linkKey] = {
@@ -78,18 +82,18 @@ const NetworkMap = ({ kolId }) => {
           connections: []
         };
       }
-  
+
       linksMap[linkKey].connections.push({ type, value });
     });
-  
+
     // Convert the linksMap into an array
     const links = Object.values(linksMap);
-  
+
     setGraphData({
       nodes: Object.values(nodes),
       links: links,
     });
-  };  
+  };
 
   const handleOptionChange = (event) => {
     setSelectedOption(event.target.value);
@@ -98,14 +102,14 @@ const NetworkMap = ({ kolId }) => {
 
   const nodeCanvasObject = (node, ctx, globalScale) => {
     if (!iconImage) return;  // Don't render if image hasn't loaded
-  
+
     const size = 30 / globalScale;
     const fontSize = 12 / globalScale;
     ctx.font = `${fontSize}px Aptos`;
-  
+
     // Save the current context state
     ctx.save();
-  
+
     // Draw orange border for primary KOL ID
     if (node.id === kolId) {
       ctx.strokeStyle = 'orange'; // Orange border color
@@ -114,7 +118,7 @@ const NetworkMap = ({ kolId }) => {
       ctx.arc(node.x, node.y, size / 2, 0, 2 * Math.PI);
       ctx.stroke();
     }
-  
+
     // Highlight node if it's selected or connected
     const isConnected = selectedNode && (node.id === selectedNode.id || isNodeConnected(node));
     if (isConnected) {
@@ -124,18 +128,18 @@ const NetworkMap = ({ kolId }) => {
       ctx.arc(node.x, node.y, size / 2, 0, 2 * Math.PI);
       ctx.stroke();
     }
-  
+
     // Create a circular clipping region
     ctx.beginPath();
     ctx.arc(node.x, node.y, size / 2, 0, 2 * Math.PI);
     ctx.clip();
-  
+
     // Draw the icon image within the clipping region
     ctx.drawImage(iconImage, node.x - size / 2, node.y - size / 2, size, size);
-  
+
     // Restore the context state (removes clipping region)
     ctx.restore();
-  
+
     // Add label below the node
     ctx.textAlign = 'center';
     ctx.fillStyle = 'black';
@@ -173,7 +177,7 @@ const NetworkMap = ({ kolId }) => {
   const linkLabel = (link) => {
     return link.connections.map(conn => `${capitalizeFirstLetter(conn.type)}-${conn.value}`).join(', ');
   };
-  
+
   return (
     <Box sx={{ flexGrow: 1, width: '100%', overflow: 'hidden', height: '100%', position: 'relative' }}>
       {/* Select component in top-right corner */}
@@ -193,7 +197,19 @@ const NetworkMap = ({ kolId }) => {
         </Select>
       </Box>
 
-      {graphData.nodes.length === 0 ? (
+      {loading ? (
+        // Show the loading spinner while data is being fetched
+        <Box
+          sx={{
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+            height: '100%',
+          }}
+        >
+          <CircularProgress sx={{ color: '#8697C4' }} />
+        </Box>
+      ) : graphData.nodes.length === 0 && !loading ? (
         <Box
           sx={{
             display: 'flex',
@@ -207,7 +223,7 @@ const NetworkMap = ({ kolId }) => {
           <Typography sx={{ fontFamily: "Aptos" }}>No connections found</Typography>
         </Box>
       ) : (
-        <Box sx={{ height: '100%',width:"100%" }}>
+        <Box sx={{ height: '100%', width: "100%" }}>
           <ForceGraph2D
             ref={graphRef}  // Attach ref to ForceGraph2D component
             graphData={graphData}
@@ -215,7 +231,7 @@ const NetworkMap = ({ kolId }) => {
             linkColor={linkColor}
             onNodeClick={handleNodeClick}  // Capture node click event
             linkLabel={linkLabel}
-            />
+          />
         </Box>
       )}
     </Box>
