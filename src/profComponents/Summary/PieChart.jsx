@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import apiClient from '../../../../client/src/utils/apiClient';
+import apiClient from '../../utils/apiClient';
 import { Pie } from 'react-chartjs-2';
 import { Card, CardContent, CardHeader, Dialog, DialogContent, DialogTitle } from '@mui/material';
 import { Chart, registerables } from 'chart.js';
