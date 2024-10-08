@@ -202,12 +202,12 @@ const MappingTable = () => {
   };
 
   return (
-    <Box sx={{ padding: 4 }}>
-      <Typography variant="h4" gutterBottom>
+    <Box sx={{ padding: 2, height: 'calc(100vh - 40px)' }}>
+      <Typography variant="h6" gutterBottom sx={{height:"5%"}}>
         User Database Mapping
       </Typography>
 
-      <Box sx={{ display: 'flex', gap: 2, marginBottom: 2, justifyContent: 'flex-start' }}>
+      <Box sx={{ display: 'flex', gap: 2, marginBottom: 2, justifyContent: 'flex-start',height:"5%" }}>
         <Creatable
           options={userIdOptions}
           value={userIdOptions.find(option => option.value === selectedUserId) || null}
@@ -244,11 +244,10 @@ const MappingTable = () => {
           <DeleteIcon />
           Delete
         </Button>
-        
         <UploadButton onFileUploaded={fetchData} />
       </Box>
 
-      <TableContainer component={Paper}>
+      <TableContainer component={Paper} sx={{height:"70%",overflowY:"auto"}} elevation={0}>
         <Table>
           <TableHead>
             <TableRow>
