@@ -1,0 +1,169 @@
+import React, { useState, useEffect } from 'react';
+import {
+  Box, Typography, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Collapse, TablePagination, IconButton, TextField
+} from '@mui/material';
+import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
+import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
+import apiClient from '../../utils/apiClient';
+
+const handleNullValue = (value) => (value === "NULL" || value === "null" ? '' : value);
+
+// Helper function to format publication data
+const createPubData = (id, date, journalName, article, meshTerms, abstract, role, publicationType, pid, link) => ({
+  id: handleNullValue(id),
+  date: handleNullValue(date),
+  journalName: handleNullValue(journalName),
+  article: handleNullValue(article),
+  meshTerms: handleNullValue(meshTerms),
+  abstract: handleNullValue(abstract),
+  role: handleNullValue(role),
+  publicationType: handleNullValue(publicationType),
+  pid: handleNullValue(pid),
+  link: handleNullValue(link)
+});
+
+const PubRow = ({ row }) => {
+  const [open, setOpen] = useState(false);
+
+  return (
+    <React.Fragment>
+      <TableRow
+        sx={{ '&:hover': { backgroundColor: '#F0F0F0' } }} // Change background color on hover
+      >
+        <TableCell>
+          <IconButton aria-label="expand row" size="small" onClick={() => setOpen(!open)}>
+            {open ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
+          </IconButton>
+        </TableCell>
+        <TableCell>
+          <a href={`${row.link}`} target="_blank" rel="noopener noreferrer">
+            {row.pid}
+          </a>
+        </TableCell>
+        <TableCell>{row.date}</TableCell>
+        <TableCell>{row.journalName}</TableCell>
+        <TableCell>{row.article}</TableCell>
+      </TableRow>
+      <TableRow>
+        <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={5}>
+          <Collapse in={open} timeout="auto" unmountOnExit>
+            <Box sx={{ margin: 1 }}>
+              <Typography variant="h6" gutterBottom component="div">
+                Publication Details
+              </Typography>
+              <Typography variant="body2"><strong>Abstract:</strong> {row.abstract}</Typography>
+              <Typography variant="body2"><strong>Role:</strong> {row.role}</Typography>
+              <Typography variant="body2"><strong>Publication Type:</strong> {row.publicationType}</Typography>
+              <Typography variant="body2"><strong>Mesh Terms:</strong> {row.meshTerms}</Typography>
+            </Box>
+          </Collapse>
+        </TableCell>
+      </TableRow>
+    </React.Fragment>
+  );
+};
+
+const Pubs = ({ kolId }) => {
+  const [publications, setPublications] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [rowsPerPage, setRowsPerPage] = useState(10);
+  const [page, setPage] = useState(0);
+  const [searchQuery, setSearchQuery] = useState(''); // State for search query
+
+  useEffect(() => {
+    const fetchPublications = async () => {
+      try {
+        const response = await apiClient.get(`/publications`, {
+          params: { kolId }
+        });
+        const publications = response.data;
+        setPublications(publications);
+        setLoading(false);
+      } catch (error) {
+        console.error('Error fetching publications:', error);
+        setLoading(false);
+      }
+    };
+
+    fetchPublications();
+  }, [kolId]);
+
+  const handlePageChange = (event, newPage) => {
+    setPage(newPage);
+  };
+
+  const handleRowsPerPageChange = (event) => {
+    setRowsPerPage(+event.target.value);
+    setPage(0);
+  };
+
+  const filteredPubs = publications.filter(publication =>
+    publication['Journal/Book Title'].toLowerCase().includes(searchQuery.toLowerCase()) ||
+    publication['Article/Chapter Title'].toLowerCase().includes(searchQuery.toLowerCase())
+  );
+
+  const rows = filteredPubs.map((publication, index) => createPubData(
+    `${publication['Publication ID']}-${index}`, // Ensure the key is unique by adding the index
+    publication['Publication Year'], // Updated to use the correct field name
+    publication['Journal/Book Title'],
+    publication['Article/Chapter Title'],
+    publication['Mesh Term'],
+    publication['Abstracts'],
+    publication['Authorship_Role'],
+    publication['Publication_Type'],
+    publication['Publication ID'],
+    publication['URL']
+  ));
+
+  return (
+    <Box sx={{ flexGrow: 1, width: '100%', px: 2,py:1, overflow: 'hidden', height: '100%' }}>
+      <div style={{ display: "flex", justifyContent: "space-between" }}>
+        <Typography variant="h6" gutterBottom color="#3D52A0">
+          List of Publications
+        </Typography>
+        <TextField
+          label="Search Publications"
+          variant="outlined"
+          size="small"
+          value={searchQuery}
+          onChange={(e) => setSearchQuery(e.target.value)}
+          sx={{ marginRight: '16px', width: '300px' }}
+        />
+        <TablePagination
+          component="div"
+          count={publications.length}
+          page={page}
+          onPageChange={handlePageChange}
+          rowsPerPage={rowsPerPage}
+          onRowsPerPageChange={handleRowsPerPageChange}
+        />
+      </div>
+      {loading ? (
+        <Typography variant="body1">Loading...</Typography>
+      ) : filteredPubs.length === 0 ? (
+        <Typography variant="body1">No publications found.</Typography>
+      ) : (
+        <TableContainer component={Paper} sx={{ maxHeight: '70vh', overflow: 'auto' }}>
+          <Table stickyHeader aria-label="collapsible table">
+            <TableHead sx={{ backgroundColor: '#54C1DF' }}>
+              <TableRow>
+                <TableCell />
+                <TableCell><strong>PubMed ID</strong></TableCell>
+                <TableCell><strong>Publication Year</strong></TableCell>
+                <TableCell><strong>Journal Name</strong></TableCell>
+                <TableCell><strong>Article</strong></TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {rows.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => (
+                <PubRow key={row.id} row={row} />
+              ))}
+            </TableBody>
+          </Table>
+        </TableContainer>
+      )}
+    </Box>
+  );
+};
+
+export default Pubs;

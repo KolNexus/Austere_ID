@@ -3,7 +3,7 @@ import { getCurrentUser } from 'aws-amplify/auth'; // Updated import statement
 
 // Create an Axios instance
 const apiClient = axios.create({
-  baseURL: `${process.env.REACT_APP_SERVER_URL}/api`,
+  baseURL: `${process.env.REACT_APP_SERVER_URL}`,
 });
 
 let selectedDatabase = '';
@@ -32,9 +32,16 @@ apiClient.interceptors.request.use(async (config) => {
   if (!userId) {
     await getUserIdFromCognito(); // Ensure userId is set before making the request
   }
+  if (!config.url.startsWith('/id/upload') && !config.url.startsWith('/api/upload')) {
+    if (selectedDatabase.startsWith('profile_')) {
+      config.baseURL = `${process.env.REACT_APP_SERVER_URL}/api`; // Change baseURL to /api
+    } else {
+      config.baseURL = `${process.env.REACT_APP_SERVER_URL}/id`; // Default to /id
+    }
+  }
 
   // Only allow requests to /databases route or if a databaseName is selected
-  if (!selectedDatabase && !config.url.startsWith('/databases') && !config.url.startsWith('/databasesavail') && !config.url.startsWith('/mapping') ) {
+  if (!selectedDatabase && !config.url.startsWith('/databases') && !config.url.startsWith('/databasesavail') && !config.url.startsWith('/mapping')) {
     return Promise.reject();
   }
   // Add userId to query parameters

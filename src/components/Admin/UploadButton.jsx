@@ -1,9 +1,10 @@
 import React, { useState, useRef } from 'react';
-import { Button, CircularProgress, Dialog, DialogContent } from '@mui/material';
+import { Button, CircularProgress, Dialog, DialogContent, FormControl, FormControlLabel, Radio, RadioGroup } from '@mui/material';
 import apiClient from '../../utils/apiClient';
 
 const UploadButton = ({ onFileUploaded }) => {
   const [loading, setLoading] = useState(false); // State to handle loading spinner
+  const [uploadType, setUploadType] = useState('profile'); // State for selecting upload type
   const fileInputRef = useRef(null);
 
   const handleFileChange = async (event) => {
@@ -16,12 +17,21 @@ const UploadButton = ({ onFileUploaded }) => {
     setLoading(true); // Show loading indicator when file upload starts
 
     try {
-      // Send the file to the server endpoint
-      const response = await apiClient.post('/upload', formData, {
-        headers: {
-          'Content-Type': 'multipart/form-data',
-        },
-      });
+      // Decide which endpoint to call based on the uploadType state
+      let response;
+      if (uploadType === 'profile') {
+        response = await apiClient.post('/api/upload', formData, {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+          },
+        });
+      } else if (uploadType === 'id') {
+        response = await apiClient.post('/id/upload', formData, {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+          },
+        });
+      }
 
       // Check if the response status is OK and handle it
       if (response.status === 200) {
@@ -47,8 +57,26 @@ const UploadButton = ({ onFileUploaded }) => {
     fileInputRef.current.click();
   };
 
+  const handleUploadTypeChange = (event) => {
+    setUploadType(event.target.value);
+  };
+
   return (
     <div>
+      {/* Radio buttons for selecting the upload type */}
+      <FormControl component="fieldset">
+        <RadioGroup
+          row
+          aria-label="uploadType"
+          name="uploadType"
+          value={uploadType}
+          onChange={handleUploadTypeChange}
+        >
+          <FormControlLabel value="profile" control={<Radio />} label="Profile" />
+          <FormControlLabel value="id" control={<Radio />} label="ID" />
+        </RadioGroup>
+      </FormControl>
+
       <input
         type="file"
         ref={fileInputRef}

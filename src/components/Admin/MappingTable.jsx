@@ -236,8 +236,6 @@ const MappingTable = () => {
           Add
         </Button>
 
-        <UploadButton onFileUploaded={fetchData} />
-
         <Button
           variant="contained"
           sx={{ backgroundColor: themeColors.button }}
@@ -246,6 +244,8 @@ const MappingTable = () => {
           <DeleteIcon />
           Delete
         </Button>
+        
+        <UploadButton onFileUploaded={fetchData} />
       </Box>
 
       <TableContainer component={Paper}>
