@@ -230,7 +230,7 @@ const Content = () => {
 
       <div className="content" style={{ overflowY: "auto" }}>
         {/* Search Bar and Legend */}
-        <Box className="search-bar" sx={{ display: 'flex', alignItems: 'center', flexWrap: 'wrap', padding: 1 }}>
+        <Box className="search-bar" sx={{ display: 'flex', alignItems: 'center', flexWrap: 'wrap', py: 1 }}>
           <Box sx={{ width: "27%" }} >
             <TextField
               variant="outlined"
@@ -277,17 +277,17 @@ const Content = () => {
             </Typography>
           </Box>
 
-          <Box sx={{ width: '64%', display: 'flex', flexDirection: 'row', justifyContent: 'space-around' }}>
-            <Typography variant="body2" color="black" sx={{ width: "25%", display: "flex", justifyContent: "center" }}>
+          <Box sx={{ width: '64.5%', display: 'flex', justifyContent: 'space-around', flexDirection: 'row', }}>
+            <Typography variant="body2" color="black" sx={{ width: "25%", display: "flex", justifyContent: "center", fontSize: 16 }}>
               <span style={{ color: colorMapping.congress }}>■ </span>Congress
             </Typography>
-            <Typography variant="body2" color="black" sx={{ width: "25%", display: "flex", justifyContent: "center" }} >
+            <Typography variant="body2" color="black" sx={{ width: "25%", display: "flex", justifyContent: "center", fontSize: 16 }}>
               <span style={{ color: colorMapping.pubs }}>■ </span>Key topic Pubs
             </Typography>
-            <Typography variant="body2" color="black" sx={{ width: "25%", display: "flex", justifyContent: "center" }}>
+            <Typography variant="body2" color="black" sx={{ width: "25%", display: "flex", justifyContent: "center", fontSize: 16 }}>
               <span style={{ color: colorMapping.trials }}>■ </span>Key topic Trials
             </Typography>
-            <Typography variant="body2" color="black" sx={{ width: "25%", display: "flex", justifyContent: "center" }}>
+            <Typography variant="body2" color="black" sx={{ width: "25%", display: "flex", justifyContent: "center", fontSize: 16 }}>
               <span style={{ color: colorMapping.association }}>■ </span>Association
             </Typography>
           </Box>

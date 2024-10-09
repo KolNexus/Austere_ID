@@ -26,8 +26,6 @@
 .doctor-card {
   display: flex;
   align-items: center;
-  padding-left: 10px;
-  padding-right: 10px;
   transition: box-shadow 0.3s ease;
   cursor: pointer;
   border-bottom: 1px solid #999; /* Blue border */
@@ -45,7 +43,6 @@
 }
 
 .doctor-details {
-  width: 300px;
   padding: 0px;
 }
 
