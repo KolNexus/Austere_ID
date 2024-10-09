@@ -27,7 +27,7 @@ const Network = lazy(() => import('./networkMap'));
 const theme = createTheme({
   typography: {
     fontFamily: 'Aptos',
-    fontSize: 12,
+    fontSize: 14,
   },
   components: {
     MuiTableCell: {

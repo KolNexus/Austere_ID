@@ -57,7 +57,7 @@ const Bio = ({ kolId }) => {
       <Card elevation={3} sx={{paddingLeft:'0px',paddingRight:'0px'}}>
         <CardContent>
           <SectionTitle>Biography Summary</SectionTitle>
-          <Typography variant="body2" paragraph>
+          <Typography variant="body2" paragraph style={{ textAlign: 'justify' }}>
             {renderField(bioData['Bio_Summary'])}
           </Typography>
 
